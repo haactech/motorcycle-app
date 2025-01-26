@@ -1,34 +1,17 @@
 <template>
   <div id="app">
     <h1>Motocicletas App</h1>
-    <CustomerForm @submit="handleSubmit" />
-    <MotorcycleList />
-    <BranchRecommendation :address="customerAddress" />
+    <MultiStepForm />
   </div>
 </template>
 
 <script>
-import CustomerForm from './components/CustomerForm.vue';
-import MotorcycleList from './components/MotorcycleList.vue';
-import BranchRecommendation from './components/BranchRecommendation.vue';
+import MultiStepForm from './components/MultiStepForm.vue';
 
 export default {
   name: 'App',
   components: {
-    CustomerForm,
-    MotorcycleList,
-    BranchRecommendation
-  },
-  data() {
-    return {
-      customerAddress: ''
-    };
-  },
-  methods: {
-    handleSubmit(customer) {
-      console.log("Cliente enviado", customer);
-      this.customerAddress = customer.address;
-    }
+    MultiStepForm
   }
 };
 </script>
