@@ -1,17 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <h1>Motocicletas App</h1>
+    <CustomerForm @submit="handleSubmit" />
+    <MotorcycleList />
+    <BranchRecommendation :address="customerAddress" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import CustomerForm from './components/CustomerForm.vue';
+import MotorcycleList from './components/MotorcycleList.vue';
+import BranchRecommendation from './components/BranchRecommendation.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    CustomerForm,
+    MotorcycleList,
+    BranchRecommendation
+  },
+  data() {
+    return {
+      customerAddress: ''
+    };
+  },
+  methods: {
+    handleSubmit(customer) {
+      console.log("Cliente enviado", customer);
+      this.customerAddress = customer.address;
+    }
   }
-}
+};
 </script>
 
 <style>
