@@ -29,13 +29,10 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        cd frontend
         npm install
 
     - name: Build
       run: |
-        cd frontend
-        # Asegúrate de que la URL de la API esté configurada correctamente
         echo "VUE_APP_API_URL=https://api.tudominio.com" > .env.production
         npm run build
 
