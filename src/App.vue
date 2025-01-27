@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>Motocicletas App</h1>
     <MultiStepForm />
   </div>
 </template>
