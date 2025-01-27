@@ -1,97 +1,173 @@
 <template>
-  <div>
+  <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
     <div v-if="!hasLocation && !showManualInput" class="text-center">
-      <p class="mb-4">Para una mejor experiencia, permítenos acceder a tu ubicación</p>
+      <p class="mb-4 text-lg text-gray-700">Para una mejor experiencia, permítenos acceder a tu ubicación</p>
       <div class="space-x-4">
         <button 
           @click="requestLocation" 
-          class="bg-blue-500 text-white px-4 py-2 rounded"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200"
         >
           Usar mi ubicación
         </button>
         <button 
           @click="showManualInput = true" 
-          class="bg-gray-500 text-white px-4 py-2 rounded"
+          class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition duration-200"
         >
           Ingresar manualmente
         </button>
       </div>
     </div>
 
-    <form v-else @submit.prevent="submitForm">
-      <!-- Datos personales siempre visibles -->
-      <div class="space-y-4">
-        <div>
-          <label for="first_name">Primer Nombre:</label>
-          <input type="text" id="first_name" v-model="customer.first_name" required>
+    <form v-else @submit.prevent="submitForm" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <label for="first_name" class="block text-sm font-medium text-gray-700">Primer Nombre:</label>
+          <input 
+            type="text" 
+            id="first_name" 
+            v-model="customer.first_name" 
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
         </div>
-        <div>
-          <label for="second_name">Segundo Nombre:</label>
-          <input type="text" id="second_name" v-model="customer.second_name">
+        <!-- Repeat the same pattern for other inputs -->
+        <div class="space-y-2">
+          <label for="second_name" class="block text-sm font-medium text-gray-700">Segundo Nombre:</label>
+          <input 
+            type="text" 
+            id="second_name" 
+            v-model="customer.second_name"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
-        <div>
-          <label for="last_name_1">Primer Apellido:</label>
-          <input type="text" id="last_name_1" v-model="customer.last_name_1" required>
+        <div class="space-y-2">
+          <label for="last_name_1" class="block text-sm font-medium text-gray-700">Primer Apellido:</label>
+          <input 
+            type="text" 
+            id="last_name_1" 
+            v-model="customer.last_name_1"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
         </div>
-        <div>
-          <label for="last_name_2">Segundo Apellido:</label>
-          <input type="text" id="last_name_2" v-model="customer.last_name_2">
+        <div class="space-y-2">
+          <label for="last_name_2" class="block text-sm font-medium text-gray-700">Segundo Apellido:</label>
+          <input 
+            type="text" 
+            id="last_name_2" 
+            v-model="customer.last_name_2"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
         </div>
-        <div>
-          <label for="email">Correo Electrónico:</label>
-          <input type="email" id="email" v-model="customer.email" required>
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
+          <input 
+            type="email" 
+            id="email" 
+            v-model="customer.email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
         </div>
-        <div>
-          <label for="phone">Teléfono:</label>
-          <input type="text" id="phone" v-model="customer.phone" required>
+        <div class="space-y-2">
+          <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+          <input 
+            type="text" 
+            id="phone" 
+            v-model="customer.phone"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
         </div>
-        <div>
-          <label for="birth_date">Fecha de Nacimiento:</label>
-          <input type="date" id="birth_date" v-model="customer.birth_date" required>
+        <div class="space-y-2">
+          <label for="birth_date" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento:</label>
+          <input 
+            type="date" 
+            id="birth_date" 
+            v-model="customer.birth_date"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          >
         </div>
       </div>
 
       <!-- Dirección -->
-      <div v-if="showManualInput" class="mt-6 space-y-4">
-        <div>
-          <label for="street">Calle:</label>
-          <input type="text" id="street" v-model="customer.street" required>
-        </div>
-        <div>
-          <label for="number">Número:</label>
-          <input type="text" id="number" v-model="customer.number" required>
-        </div>
-        <div>
-          <label for="district">Colonia:</label>
-          <input type="text" id="district" v-model="customer.district" required>
-        </div>
-        <div>
-          <label for="city">Ciudad:</label>
-          <input type="text" id="city" v-model="customer.city" required>
-        </div>
-        <div>
-          <label for="state">Estado:</label>
-          <input type="text" id="state" v-model="customer.state" required>
+      <div v-if="showManualInput" class="mt-8 space-y-6">
+        <h3 class="text-lg font-medium text-gray-900">Dirección</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label for="street" class="block text-sm font-medium text-gray-700">Calle:</label>
+            <input 
+              type="text" 
+              id="street" 
+              v-model="customer.street"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+          </div>
+          <div class="space-y-2">
+            <label for="number" class="block text-sm font-medium text-gray-700">Número:</label>
+            <input 
+              type="text" 
+              id="number" 
+              v-model="customer.number"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+          </div>
+          <div class="space-y-2">
+            <label for="district" class="block text-sm font-medium text-gray-700">Colonia:</label>
+            <input 
+              type="text" 
+              id="district" 
+              v-model="customer.district"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+          </div>
+          <div class="space-y-2">
+            <label for="city" class="block text-sm font-medium text-gray-700">Ciudad:</label>
+            <input 
+              type="text" 
+              id="city" 
+              v-model="customer.city"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+          </div>
+          <div class="space-y-2">
+            <label for="state" class="block text-sm font-medium text-gray-700">Estado:</label>
+            <input 
+              type="text" 
+              id="state" 
+              v-model="customer.state"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+          </div>
         </div>
       </div>
 
       <!-- Mostrar la dirección obtenida si se usó geolocalización -->
-      <div v-else-if="hasLocation" class="mt-6">
-        <div class="bg-gray-100 p-4 rounded">
-          <h3 class="font-bold mb-2">Ubicación detectada:</h3>
-          <p>{{ customer.street }} {{ customer.number }}</p>
-          <p>{{ customer.district }}</p>
-          <p>{{ customer.city }}, {{ customer.state }}</p>
+      <div v-else-if="hasLocation" class="mt-8">
+        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Ubicación detectada:</h3>
+          <p class="text-gray-700">{{ customer.street }} {{ customer.number }}</p>
+          <p class="text-gray-700">{{ customer.district }}</p>
+          <p class="text-gray-700">{{ customer.city }}, {{ customer.state }}</p>
           <button 
             @click="showManualInput = true" 
-            class="text-blue-500 underline mt-2"
+            class="mt-4 text-blue-500 hover:text-blue-600 underline"
           >
             Editar dirección
           </button>
         </div>
       </div>
 
-      <button type="submit" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded">
+      <button 
+        type="submit" 
+        class="w-full md:w-auto px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition duration-200"
+      >
         Siguiente
       </button>
     </form>
@@ -145,7 +221,7 @@ export default {
     async reverseGeocode(lat, lon) {
       try {
         const headers = {
-          'User-Agent': 'MotorcycleShopApp/1.0' // Mismo User-Agent que el backend
+          'User-Agent': 'MotorcycleShopApp/1.0'
         };
         
         const response = await fetch(
@@ -158,55 +234,46 @@ export default {
           throw new Error('No se pudo obtener la dirección');
         }
 
-        // Extraer y normalizar la información de la dirección
         const address = data.address;
         
-        // Para la calle, intentamos diferentes campos en orden de preferencia
         this.customer.street = address.road || 
                              address.street || 
                              address.pedestrian || 
                              address.footway || 
                              '';
 
-        // Para el número, usamos house_number o el número del street si existe
         this.customer.number = address.house_number || 
                              (this.customer.street.match(/\d+/) || [''])[0] || 
-                             '1'; // Número por defecto si no hay
+                             '1'; 
 
-        // Para el distrito/colonia, intentamos varios campos
         this.customer.district = address.suburb || 
                                address.neighbourhood || 
                                address.residential || 
                                address.quarter || 
                                address.city_district ||
-                               'Centro'; // Valor por defecto si no hay
+                               'Centro';
 
-        // Para la ciudad
         this.customer.city = address.city || 
                            address.town || 
                            address.municipality || 
                            address.city_district || 
                            '';
 
-        // Para el estado
         this.customer.state = address.state || 
                             address.region || 
                             '';
 
-        // Verificar que tengamos todos los campos requeridos
         const requiredFields = ['street', 'number', 'district', 'city', 'state'];
         const missingFields = requiredFields.filter(field => !this.customer[field]);
 
         if (missingFields.length > 0) {
           console.warn('Campos faltantes:', missingFields);
           
-          // Si falta la colonia pero tenemos ciudad, podemos usar un valor por defecto
           if (missingFields.includes('district') && this.customer.city) {
             this.customer.district = 'Centro';
             missingFields.splice(missingFields.indexOf('district'), 1);
           }
 
-          // Si aún faltan campos después de los valores por defecto
           if (missingFields.length > 0) {
             this.showManualInput = true;
             return;
@@ -215,7 +282,6 @@ export default {
 
         this.hasLocation = true;
         
-        // Log para debugging
         console.log('Dirección obtenida:', {
           street: this.customer.street,
           number: this.customer.number,

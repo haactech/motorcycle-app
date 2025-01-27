@@ -1,54 +1,96 @@
 <template>
-  <div>
-    <!-- Paso 1: Captura de Datos del Cliente -->
-    <div v-if="step === 1">
-      <h2>Paso 1: Tus Datos</h2>
-      <CustomerForm @form-submitted="handleCustomerData" />
-    </div>
-
-    <!-- Paso 2: Selección de Motocicleta -->
-    <div v-if="step === 2">
-      <h2>Paso 2: Motocicleta de Interés</h2>
-      <MotorcycleList @select="handleMotorcycleSelection" />
-    </div>
-
-    <!-- Paso 3: Recomendación de Sucursal y Mapa -->
-    <div v-if="step === 3">
-      <h2>Paso 3: Sucursal Recomendada</h2>
-      <BranchRecommendation v-if="nearestBranch" :branch="nearestBranch" />
-      <p v-else>Cargando sucursal recomendada...</p>
-      <button @click="step = 4">Continuar</button>
-    </div>
-
-    <!-- Paso 4: Resumen y Confirmación -->
-    <div v-if="step === 4">
-      <h2>Paso 4: Resumen</h2>
-      <div>
-        <h3>Tus Datos:</h3>
-        <p>{{ customerData.first_name }} {{ customerData.last_name_1 }}</p>
-        <p>{{ customerData.email }}</p>
-        <p>{{ customerData.street }} {{ customerData.number }}, {{ customerData.district }}, {{ customerData.city }}, {{ customerData.state }}</p>
+  <div class="max-w-4xl mx-auto p-6">
+    <!-- Progress Bar -->
+    <div class="mb-8">
+      <div class="flex justify-between mb-2">
+        <div v-for="i in 4" :key="i" 
+             class="flex items-center relative">
+          <div :class="`rounded-full h-10 w-10 flex items-center justify-center border-2 
+            ${step >= i ? 'bg-blue-500 text-white border-blue-500' : 'border-gray-300 text-gray-500'}
+            transition-all duration-300 ease-in-out`">
+            {{ i }}
+          </div>
+          <div v-if="i < 4" class="w-24 h-1 mx-2 transition-all duration-300 ease-in-out"
+               :class="step > i ? 'bg-blue-500' : 'bg-gray-300'"></div>
+        </div>
       </div>
-      <div>
-        <h3>Motocicleta Seleccionada:</h3>
-        <p>{{ selectedMotorcycle.brand }} {{ selectedMotorcycle.model }} ({{ selectedMotorcycle.year }})</p>
+      <div class="flex justify-between px-2 mt-2">
+        <span class="text-sm text-gray-600">Datos</span>
+        <span class="text-sm text-gray-600">Motocicleta</span>
+        <span class="text-sm text-gray-600">Sucursal</span>
+        <span class="text-sm text-gray-600">Resumen</span>
       </div>
-      <div>
-        <h3>Sucursal Recomendada:</h3>
-        <p>{{ nearestBranch.name }} - {{ nearestBranch.address }} ({{ nearestBranch.distance_km }} km)</p>
-      </div>
-      <button @click="submitForm">Confirmar</button>
     </div>
 
-    <!-- Navegación entre pasos -->
-    <div v-if="step > 1">
-      <button @click="step--">Anterior</button>
+    <div class="bg-white rounded-lg shadow-lg p-6 transition-all duration-300 ease-in-out">
+      <div v-if="step === 1" class="space-y-6">
+        <h2 class="text-2xl font-bold text-gray-800">Paso 1: Tus Datos</h2>
+        <CustomerForm @form-submitted="handleCustomerData" />
+      </div>
+
+      <div v-if="step === 2" class="space-y-6">
+        <h2 class="text-2xl font-bold text-gray-800">Paso 2: Motocicleta de Interés</h2>
+        <MotorcycleList @select="handleMotorcycleSelection" />
+      </div>
+
+      <div v-if="step === 3" class="space-y-6">
+        <h2 class="text-2xl font-bold text-gray-800">Paso 3: Sucursal Recomendada</h2>
+        <BranchRecommendation v-if="nearestBranch" :branch="nearestBranch" />
+        <p v-else class="text-gray-600 italic">Cargando sucursal recomendada...</p>
+        <button 
+          @click="step = 4"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition duration-200"
+        >
+          Continuar
+        </button>
+      </div>
+
+      <div v-if="step === 4" class="space-y-8">
+        <h2 class="text-2xl font-bold text-gray-800">Paso 4: Resumen</h2>
+        
+        <div class="space-y-6">
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Tus Datos:</h3>
+            <div class="space-y-2 text-gray-600">
+              <p class="font-medium">{{ customerData.first_name }} {{ customerData.last_name_1 }}</p>
+              <p>{{ customerData.email }}</p>
+              <p>{{ customerData.street }} {{ customerData.number }}, {{ customerData.district }}, {{ customerData.city }}, {{ customerData.state }}</p>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Motocicleta Seleccionada:</h3>
+            <p class="text-gray-600">{{ selectedMotorcycle.brand }} {{ selectedMotorcycle.model }} ({{ selectedMotorcycle.year }})</p>
+          </div>
+
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Sucursal Recomendada:</h3>
+            <p class="text-gray-600">{{ nearestBranch.name }} - {{ nearestBranch.address }} ({{ nearestBranch.distance_km }} km)</p>
+          </div>
+        </div>
+
+        <button 
+          @click="submitForm"
+          class="w-full md:w-auto bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-lg font-medium transition duration-200"
+        >
+          Confirmar
+        </button>
+      </div>
+
+      <div v-if="step > 1" class="mt-6 flex justify-between">
+        <button 
+          @click="step--"
+          class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition duration-200"
+        >
+          Anterior
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import api from '../api'; // Importa el módulo de la API
+import api from '../api';
 import CustomerForm from './CustomerForm.vue';
 import MotorcycleList from './MotorcycleList.vue';
 import BranchRecommendation from './BranchRecommendation.vue';
@@ -64,12 +106,12 @@ export default {
       step: 1,
       customerData: {},
       selectedMotorcycle: {},
-      motorcycles: [], // Lista de motocicletas desde la API
-      nearestBranch: null, // Sucursal recomendada desde la API
+      motorcycles: [], 
+      nearestBranch: null,
     };
   },
   async created() {
-    // Obtener las motocicletas al cargar el componente
+
     try {
       const motorcyclesResponse = await api.getMotorcycles();
       this.motorcycles = motorcyclesResponse.data;
@@ -90,9 +132,8 @@ export default {
     this.selectedMotorcycle = motorcycle;
     this.step = 3;
 
-    console.log('Datos del cliente antes de calcular la sucursal:', this.customerData); // Verifica los datos
+    console.log('Datos del cliente antes de calcular la sucursal:', this.customerData); 
 
-    // Verifica que customerData tenga los valores correctos
     if (
       this.customerData.street &&
       this.customerData.number &&
@@ -116,7 +157,6 @@ export default {
           state: this.customerData.state,
         };
 
-        console.log('Datos enviados a la API:', addressData); // Verifica los datos enviados
 
         const response = await api.recommendBranch(addressData);
         this.nearestBranch = response.data.nearest_branch;
@@ -132,20 +172,20 @@ export default {
         last_name_2: this.customerData.last_name_2,
         email: this.customerData.email,
         phone: this.customerData.phone,
-        birth_date: this.customerData.birth_date, // Asegúrate de que esté en formato 'YYYY-MM-DD'
+        birth_date: this.customerData.birth_date,
         street: this.customerData.street,
         number: this.customerData.number,
         district: this.customerData.district,
         city: this.customerData.city,
         state: this.customerData.state,
-        motorcycle_ids: [this.selectedMotorcycle.id], // Envía el ID de la motocicleta seleccionada
+        motorcycle_ids: [this.selectedMotorcycle.id], 
       };
 
       try {
         const response = await api.createClient(formData);
         alert('Cliente creado con éxito');
         console.log('Respuesta de la API:', response.data);
-        this.step = 4; // Avanzar al paso de resumen
+        this.step = 4; 
       } catch (error) {
         console.error('Error creating client:', error);
         alert('Hubo un error al crear el cliente');

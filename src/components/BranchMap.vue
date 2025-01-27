@@ -8,6 +8,9 @@
   <script>
   import L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
+  import markerIcon from 'leaflet/dist/images/marker-icon.png';
+  import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+  import markerShadow from 'leaflet/dist/images/marker-shadow.png';
   
   export default {
     props: {
@@ -26,14 +29,28 @@
           return;
         }
   
+        // Configurar el icono por defecto
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+          iconUrl: markerIcon,
+          iconRetinaUrl: markerIcon2x,
+          shadowUrl: markerShadow,
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+  
         const branchLocation = this.branch.location;
         
         // Create the map
-        const map = L.map('map').setView([branchLocation.lat, branchLocation.lng], 13);
+        const map = L.map('map').setView([branchLocation.lat, branchLocation.lng], 15);
   
         // Añadir capa de tiles (puedes usar OpenStreetMap o cualquier otro proveedor)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors'
+          attribution: '© OpenStreetMap contributors',
+          maxZoom: 19,
+          className: 'map-tiles'
         }).addTo(map);
   
         // Añadir un marcador en la ubicación de la sucursal
