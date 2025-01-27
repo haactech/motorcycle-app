@@ -1,25 +1,37 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:4200',
+  baseURL: process.env.VUE_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+// Add response interceptor for error handling
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 404) {
+      console.error('Recurso no encontrado:', error);
+    } else if (error.response?.status === 500) {
+      console.error('Error del servidor:', error);
+    } else {
+      console.error('Error de red:', error);
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default {
-  // Obtener todas las motocicletas
   getMotorcycles() {
     return apiClient.get('/motorcycles');
   },
 
-  // Calcular la sucursal recomendada
   recommendBranch(addressData) {
-    console.log("valor de addressData: ",addressData)
+    console.log("Enviando datos de dirección:", addressData);
     return apiClient.post('/recommend-branch', addressData);
   },
 
-  // Crear un nuevo cliente
   createClient(clientData) {
     return apiClient.post('/client', clientData);
   },
