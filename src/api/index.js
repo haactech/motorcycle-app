@@ -7,7 +7,6 @@ const apiClient = axios.create({
   },
 });
 
-// Add response interceptor for error handling
 apiClient.interceptors.response.use(
   response => response,
   error => {
